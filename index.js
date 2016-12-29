@@ -38,8 +38,14 @@ class BabelCompiler {
         const plugin = name.startsWith('babel-') ? name : `babel-${type}-${name}`;
         return resolve(config.paths.root, 'node_modules', plugin);
       };
-      if (typeof data === 'string') return resolvePath(data);
-      return [resolvePath(data[0]), data[1]];
+      
+      if (typeof data === 'string') {
+        return resolvePath(data);
+      } else if (data instanceof Array) {
+        return [resolvePath(data[0]), data[1]];
+      } else {
+        return data;
+      }
     };
     const mappedPresets = opts.presets.map(mapOption('preset'));
     const mappedPlugins = opts.plugins.map(mapOption('plugin'));
